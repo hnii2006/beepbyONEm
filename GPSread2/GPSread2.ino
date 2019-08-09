@@ -1,4 +1,4 @@
-
+// GPS velocity counter nii 2019/8/1
 
 #include <Adafruit_GPS.h>
 
@@ -70,6 +70,8 @@ void loop() // run over and over again
     Serial.println("*");
   }
 }
+
+// calc the length of one degree.
 //10000000 = 1 degree
 float lenX, lenY;
 void calcVal() {
@@ -88,6 +90,7 @@ void calcVal() {
   //1degree, lenX=90097.63m,lenY=110946.26m
 }
 
+// test one [m] and generate beep
 void decodeGPS() {
   uint32_t x,y;
   float dx,dy,l;
@@ -125,24 +128,24 @@ void decodeGPS() {
   }
   l = dx*dx+dy*dy;
   if(l >= 10000) {
-    digitalWrite(BEEP, HIGH);
-    delay(blen);
-    digitalWrite(BEEP, LOW);
     l = 1/sqrt(l/10000.0);
     if(l < 0.5) {
       oldX = x;
       oldX = y;
     } else {
+      digitalWrite(BEEP, HIGH);
+      delay(blen);
+      digitalWrite(BEEP, LOW);
       oldX = oldX + ((int32_t)x - (int32_t)oldX) * l;
       oldY = oldY + ((int32_t)y - (int32_t)oldY) * l;
       }
-      Serial.print("Old");
-      Serial.print(oldX);
-      Serial.print(",");
-      Serial.print(oldY);
-      Serial.print("New");
-      Serial.print(x);
-      Serial.print(",");
-      Serial.print(y);
+      //Serial.print("Old");
+      //Serial.print(oldX);
+      //Serial.print(",");
+      //Serial.print(oldY);
+      //Serial.print("New");
+      //Serial.print(x);
+      //Serial.print(",");
+      //Serial.print(y);
   }
 }
