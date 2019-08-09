@@ -112,10 +112,11 @@ void decodeGPS() {
   Serial.print((int32_t)y - (int32_t)oldY);
   dx = ((int32_t)x - (int32_t)oldX) * lenX;
   dy = ((int32_t)y - (int32_t)oldY) * lenY;
-  Serial.print(" Dif ");
+  Serial.print(" Dif(");
   Serial.print(dx);
   Serial.print(",");
   Serial.print(dy);
+  Serial.print(")");
   switch(sd) {
     case 4:// RTK FIXed
       blen = 100;
@@ -129,6 +130,8 @@ void decodeGPS() {
   l = dx*dx+dy*dy;
   if(l >= 10000) {
     l = 1/sqrt(l/10000.0);
+    Serial.print("l");
+    Serial.print(l);
     if(l < 0.5) {
       oldX = x;
       oldX = y;
@@ -136,16 +139,16 @@ void decodeGPS() {
       digitalWrite(BEEP, HIGH);
       delay(blen);
       digitalWrite(BEEP, LOW);
-      oldX = oldX + ((int32_t)x - (int32_t)oldX) * l;
-      oldY = oldY + ((int32_t)y - (int32_t)oldY) * l;
-      }
-      //Serial.print("Old");
-      //Serial.print(oldX);
-      //Serial.print(",");
-      //Serial.print(oldY);
-      //Serial.print("New");
-      //Serial.print(x);
-      //Serial.print(",");
-      //Serial.print(y);
+      Serial.print("Old");
+      Serial.print(oldX);
+      Serial.print(",");
+      Serial.print(oldY);
+      oldX = oldX + (int32_t)(((int32_t)x - (int32_t)oldX) * l);
+      oldY = oldY + (int32_t)(((int32_t)y - (int32_t)oldY) * l);
+    }
+    Serial.print("New");
+    Serial.print(oldX);
+    Serial.print(",");
+    Serial.print(oldY);
   }
 }
