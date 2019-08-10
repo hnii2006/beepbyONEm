@@ -13,7 +13,7 @@ Adafruit_GPS GPS(&GPSSerial);
 #define GPSECHO false
 
 #define BEEP A6
-
+#define LED 13
 uint32_t timer = millis();
 uint32_t oldX = 0;
 uint32_t oldY = 0;
@@ -21,6 +21,7 @@ uint32_t oldY = 0;
 void setup()
 {
   pinMode(BEEP, OUTPUT);
+  pinMode(LED, OUTPUT);
   Serial.begin(250000);
   Serial.println("Adafruit GPS library basic test!");
 
@@ -137,8 +138,10 @@ void decodeGPS() {
       oldX = y;
     } else {
       digitalWrite(BEEP, HIGH);
+      digitalWrite(LED, HIGH);
       delay(blen);
       digitalWrite(BEEP, LOW);
+      digitalWrite(LED, LOW);
       Serial.print("Old");
       Serial.print(oldX);
       Serial.print(",");
